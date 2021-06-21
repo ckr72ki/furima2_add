@@ -30,7 +30,7 @@ class ItemsController < ApplicationController
 
   def show
     @item = Item.find(params[:id])
-    @messages = Message.all
+    @messages = @item.messages.includes(:user).order("created_at DESC")
     @message = Message.new
   end
 

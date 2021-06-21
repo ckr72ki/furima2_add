@@ -14,6 +14,7 @@ class Item < ApplicationRecord
     belongs_to :user
     has_one :order
     has_one :item_order
+    has_many :messages
 
     #<<バリデーション>>
   with_options presence: true do
