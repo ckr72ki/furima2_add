@@ -1,0 +1,68 @@
+<%= render "shared/header" %>
+<div class="item-show">
+<div class="account-page">
+  <div class="account-page-tittle">
+    <h1>マイページ</h1>
+  </div><br>
+    <div class="card-title">
+    <h2>カード情報</h2>
+  </div>
+  <div class="card-info">
+    【カード番号】
+    <br>
+    <%= "**** **** **** " + @card[:last4] %>
+    <%# カード番号の下4桁を取得 %>
+
+    <br>
+    【有効期限】
+    <br>
+    <%= @card[:exp_month] %>
+    <%# 有効期限の「月」を取得 %>
+    /
+    <%= @card[:exp_year] %>
+    <%# 有効期限の「年」を取得 %>
+  </div>
+  <div class="account-info">
+    <h2>ユーザー情報</h2>
+  </div>
+  <div class="account-page-form">
+    <%= form_with model:@user, url:user_registration_path do |f| %>
+      <div class="FormField">
+        <div class="FormField__name">
+          <%= f.label :nickname %>
+        </div>
+        <div class="FormField__name">
+          <%= f.text_field :nickname, autofocus: true %>
+        </div>
+      </div>
+      <div class="FormField">
+        <div class="FormField__email">
+          <%= f.label :email %>
+        </div>
+        <div class="FormField__email">
+          <%= f.email_field :email %>
+        </div>
+        <br>
+      </div>
+      <%= f.submit "更新する" %>
+    <% end %>
+  </div>
+  </div>
+      <div class="page-out-btns">
+        <br>
+        <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class:"log-out-btn"%>
+        <br>
+        <%= link_to "商品一覧へ戻る", root_path, class:"return-btn"%>
+      </div>
+</div>
+ <footer class="my-page-footer">
+    <ul class="menu">
+      <li><a href="#">プライバシーポリシー</a></li>
+      <li><a href="#">フリマ利用規約</a></li>
+      <li><a href="#">特定商取引に関する表記</a></li>
+    </ul>
+    <%= link_to image_tag('furima-logo-color.png' , size: '185x50'), "/" %>
+    <p class="inc">
+      ©︎Furima,Inc.
+    </p>
+  </footer>
