@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   root 'items#index'
   resources :items do
     resources :messages, only: [:new, :create]
+    get 'order_show', on: :member
     post 'order', on: :member
   end
   resources :users, only: [:show, :update]
