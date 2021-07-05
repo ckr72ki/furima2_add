@@ -1,11 +1,7 @@
 class ItemsController < ApplicationController
-  # ログイン状態のユーザーのみ、商品出品ページへ遷移できること
-  # ログアウト状態のユーザーは、商品出品ページへ遷移しようとすると、ログインページへ遷移すること
-  # ログアウト状態のユーザーでも、商品一覧表示ページを見ることができること
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :find_item, only: :order  # 「find_item」を動かすアクションを限定
-
-  # before_action :move_to_index, only: [:edit, :update, :destory]
+  before_action :move_to_index, only: [:edit, :update, :destory, :order_show, :order]
 
 
   def index
@@ -36,9 +32,7 @@ class ItemsController < ApplicationController
 
   def edit
     @item = Item.find(params[:id])
-    # @item = Item.includes(:user).order(created_at: :desc).with_attached_image
-    return redirect_to root_path if current_user.id != @item.user.id ||  @item.order != nil
-  end
+   end
 
   def update
     @item = Item.find(params[:id])
@@ -53,13 +47,17 @@ class ItemsController < ApplicationController
 
   def destroy
     @item = Item.find(params[:id])
-    # @item = Item.includes(:item_purchase).order(created_at: :desc).with_attached_image    @item.destroy
     if current_user.id == @item.user.id
       @item.destroy
       redirect_to root_path
     else
       redirect_to root_path
     end
+  end
+
+  def order_show
+    @item = Item.find(params[:id])
+    @user = current_user
   end
   
   def order # 購入する時のアクションを定義
@@ -71,7 +69,8 @@ class ItemsController < ApplicationController
       customer: customer_token, # 顧客のトークン
       currency: 'jpy' # 通貨の種類（日本円）
     )
-    ItemOrder.create(item_id: params[:id]) # 商品のid情報を「item_id」として保存する
+    Order.create(item_id: params[:id],user_id: current_user.id) # 商品のid情報を「item_id」として保存する
+    binding.pry
     redirect_to root_path
 
   end
@@ -96,9 +95,9 @@ class ItemsController < ApplicationController
     ).merge(user_id: current_user.id)
   end
   
-  # def move_to_index
-  #   return redirect_to root_path if current_user.id == @item.user.id
-  # end
+  def move_to_index
+    return redirect_to root_path if current_user.id == find_item.user_id || find_item.order != nil
+  end
   
   
 

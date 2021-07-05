@@ -32,7 +32,9 @@
     padding: 1vh 0;
     color: rgb(37, 83, 248);
     border: 2px solid #3ccace;
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .page-out-btns{
   display: flex;
