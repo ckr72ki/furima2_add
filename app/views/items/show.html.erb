@@ -96,10 +96,16 @@
     <div id='messages'>
      <h4>＜コメント一覧＞</h4>
     <% @messages.reverse_each do |message| %>
-        <p>
-          <strong><%= link_to message.user.nickname, "/users/#{message.user_id}" %>：</strong>
-          <%= message.text %>
-        </p>
+        <%# <p>
+          <strong><%= link_to message.user.nickname, "/users/#{message.user_id}" %>
+          <%# <%= message.text %>
+        <%# </p>  %>
+      <p>
+      <%= message.text %>:
+      <span class="name">
+        <a href="/users/<%= message.user.id %>",id="message_user"><%= message.user.nickname %></a>
+      </span>
+      </p>
       <% end %>
     </div>
   </div>
