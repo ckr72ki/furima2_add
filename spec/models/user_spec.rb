@@ -38,7 +38,6 @@ RSpec.describe User, type: :model do
     it "passwordが空では登録できない" do
       @user.password = ""
       @user.valid?
-      binding.pry
       expect(@user.errors.full_messages).to include("Password can't be blank")
     end
     it "passwordが５文字以下の場合、登録できない" do
@@ -59,12 +58,24 @@ RSpec.describe User, type: :model do
       # binding.pry
       expect(@user.errors.full_messages).to include("Password is invalid")
     end
+    it "password_confirmationがからでは登録できない" do
+      @user.password_confirmation = ""
+      @user.valid?
+      expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
+    end
+    it "passwordと確認用が一致していること" do
+      @user.password
+      @user.password_confirmation = "kkk222"
+      @user.valid?
+      binding.pry
+      expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
+    end
+
     it "first_nameが空では登録できない" do
       @user.first_name = ""
       @user.valid?
       # binding.pry
       expect(@user.errors.full_messages).to include("First name can't be blank")
-      
     end
     it "first_nameがアルファベットでは登録できない" do
       @user.first_name = "hanaco"
